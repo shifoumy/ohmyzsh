@@ -15,7 +15,9 @@
 # -------------------------------------------------------------------------
 
 __docker-compose_q() {
-    docker-compose 2>/dev/null $compose_options "$@"
+
+    (( ${+commands[docker-compose]} )) && dccmd='docker-compose' || dccmd='docker compose'
+    $dccmd 2>/dev/null $compose_options "$@"
 }
 
 # All services defined in docker-compose.yml
