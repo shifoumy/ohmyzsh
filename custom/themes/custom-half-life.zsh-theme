@@ -40,8 +40,8 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 PR_RST="%{${reset_color}%}"
 FMT_BRANCH=" on ${turquoise}%b%u%c${PR_RST}"
 FMT_ACTION=" performing a ${limegreen}%a${PR_RST}"
-FMT_UNSTAGED="${orange} ●"
-FMT_STAGED="${limegreen} ●"
+FMT_UNSTAGED="${orange} ✘"
+FMT_STAGED="${limegreen} ✔"
 
 zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
 zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
