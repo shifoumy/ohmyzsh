@@ -36,18 +36,16 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 # %c - stagedstr (see below)
 # %a - action (e.g. rebase-i)
 # %R - repository path
-# %S - path in the repository
-PR_RST="%{${reset_color}%}"
-FMT_BRANCH=" on ${turquoise}%b%u%c${PR_RST}"
-FMT_ACTION=" performing a ${limegreen}%a${PR_RST}"
-FMT_UNSTAGED="${orange} ✘"
-FMT_STAGED="${limegreen} ✔"
+#FMT_BRANCH=" on ${turquoise}%b%u%c${PR_RST}"
+#FMT_ACTION=" performing a ${limegreen}%a${PR_RST}"
+#FMT_UNSTAGED="${orange} ✘"
+#FMT_STAGED="${limegreen} ✔"
 
-zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
-zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
-zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_BRANCH}${FMT_ACTION}"
-zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
-zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
+#zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
+#zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
+#zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_BRANCH}${FMT_ACTION}"
+#zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
+#zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
 
 
 function steeef_chpwd {
@@ -65,6 +63,13 @@ function virtualenv_prompt_info {
   echo "${ZSH_THEME_VIRTUALENV_PREFIX:=[}${VIRTUAL_ENV:t}${ZSH_THEME_VIRTUALENV_SUFFIX:=]}"
 }
 local virtualenv_info='$(virtualenv_prompt_info)'
+local git_info='$(git_prompt_info)'
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%} on branch ${turquoise}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+# ZSH_THEME_GIT_PROMPT_DIRTY="${orange} ✘✘✘"
+# ZSH_THEME_GIT_PROMPT_CLEAN="${limegreen} ✔"
+ZSH_THEME_GIT_PROMPT_DIRTY="${orange} 😡"
+ZSH_THEME_GIT_PROMPT_CLEAN="${limegreen} 😃"
 
 function steeef_precmd {
   (( PR_GIT_UPDATE )) || return
@@ -95,10 +100,16 @@ ZSH_THEME_RUBY_PROMPT_PREFIX="with%F{red} "
 ZSH_THEME_RUBY_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_RVM_PROMPT_OPTIONS="v g"
 
+if [ "$EUID" -eq 0 ]; then
+  user_color=${hotpink}
+else
+  user_color=${purple}
+fi
+
 setopt prompt_subst
-PROMPT="╭─ ${purple}%n%{$reset_color%} in ${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_%{$reset_color%}
-╰─${virtualenv_info} ${orange}λ%{$reset_color%} "
+PROMPT="╭─● ${user_color}%n%{$reset_color%} in ${limegreen}%~%{$reset_color%}${git_info}
+╰─➤${virtualenv_info} ${orange}λ%{$reset_color%} "
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 ZSH_THEME_VIRTUALENV_PREFIX=" ${FG[239]}using${FG[243]} «"
-ZSH_THEME_VIRTUALENV_SUFFIX="»%{$reset_color%}"
+ZSH_THEME_VIRTUALENV_SUFFIX="»%{$reset_color%}${FG[239]} python virtual env${FG[243]}"
