@@ -8,7 +8,7 @@
 # https://briancarper.net/blog/570/git-info-in-your-zsh-prompt
 
 #use extended color palette if available
-if [[ $TERM = (*256color|*rxvt*) ]]; then
+if [[ $TERM = (*256color|*rxvt*|alacritty) ]]; then
   turquoise="%{${(%):-"%F{81}"}%}"
   orange="%{${(%):-"%F{166}"}%}"
   purple="%{${(%):-"%F{135}"}%}"
@@ -68,8 +68,9 @@ ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%} on branch ${turquoise}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 # ZSH_THEME_GIT_PROMPT_DIRTY="${orange} ✘✘✘"
 # ZSH_THEME_GIT_PROMPT_CLEAN="${limegreen} ✔"
-ZSH_THEME_GIT_PROMPT_DIRTY="${orange} 😡"
-ZSH_THEME_GIT_PROMPT_CLEAN="${limegreen} 😃"
+# ZSH_THEME_GIT_PROMPT_DIRTY="${orange} 😡"
+ZSH_THEME_GIT_PROMPT_DIRTY="%B %F{red} 😡 %b"
+ZSH_THEME_GIT_PROMPT_CLEAN="%B ${limegreen} 😃 %b"
 
 function steeef_precmd {
   (( PR_GIT_UPDATE )) || return
