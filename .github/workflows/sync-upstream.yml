@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
 
       - name: Configure git
         run: |
@@ -30,5 +31,7 @@ jobs:
           git merge upstream/master --allow-unrelated-histories || true
 
       - name: Push to fork
-        run: git push origin master
-        continue-on-error: true
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/shifoumy/ohmyzsh.git
+          git push origin master
+        continue-on-error: false
